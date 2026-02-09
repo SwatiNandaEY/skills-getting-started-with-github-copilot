@@ -89,15 +89,48 @@ section h3 {
   color: #1a237e;
 }
 
-.participants-section ul {
-  list-style-position: inside;
+.participants-list {
+  list-style: none;
   margin-left: 0;
+  padding-left: 0;
 }
 
-.participants-section li {
-  margin-bottom: 5px;
+.participant-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+  padding: 8px;
+  background-color: white;
+  border-radius: 3px;
   color: #333;
   font-size: 14px;
+}
+
+.participant-item span {
+  flex: 1;
+}
+
+.delete-btn {
+  background-color: #dc3545;
+  color: white;
+  border: none;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  margin-left: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 18px;
+  line-height: 1;
+  transition: background-color 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.delete-btn:hover {
+  background-color: #c82333;
 }
 
 .form-group {

@@ -27,8 +27,8 @@ document.addEventListener("DOMContentLoaded", () => {
           <p><strong>Availability:</strong> ${spotsLeft} spots left</p>
           <div class="participants-section">
             <strong>Current Participants (${details.participants.length}):</strong>
-            <ul>
-              ${details.participants.map(email => `<li>${email}</li>`).join('')}
+            <ul class="participants-list">
+              ${details.participants.map(email => `<li class="participant-item"><span>${email}</span><button class="delete-btn" data-activity="${name}" data-email="${email}" title="Remove participant">×</button></li>`).join('')}
             </ul>
           </div>
         `;
@@ -68,6 +68,7 @@ document.addEventListener("DOMContentLoaded", () => {
         messageDiv.textContent = result.message;
         messageDiv.className = "success";
         signupForm.reset();
+        fetchActivities(); // Refresh the activities list
       } else {
         messageDiv.textContent = result.detail || "An error occurred";
         messageDiv.className = "error";
@@ -84,6 +85,33 @@ document.addEventListener("DOMContentLoaded", () => {
       messageDiv.className = "error";
       messageDiv.classList.remove("hidden");
       console.error("Error signing up:", error);
+    }
+  });
+
+  // Handle participant deletion
+  document.addEventListener("click", async (event) => {
+    if (event.target.classList.contains("delete-btn")) {
+      const activity = event.target.dataset.activity;
+      const email = event.target.dataset.email;
+
+      if (confirm(`Remove ${email} from ${activity}?`)) {
+        try {
+          const response = await fetch(
+            `/activities/${encodeURIComponent(activity)}/unregister?email=${encodeURIComponent(email)}`,
+            { method: "DELETE" }
+          );
+
+          if (response.ok) {
+            fetchActivities(); // Refresh the list
+          } else {
+            const result = await response.json();
+            alert(result.detail || "Failed to remove participant");
+          }
+        } catch (error) {
+          alert("Error removing participant");
+          console.error("Error:", error);
+        }
+      }
     }
   });
 
